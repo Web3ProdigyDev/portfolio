@@ -1,7 +1,8 @@
-import SplitLayout from "./layout/SplitLayout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import SplitLayout from "./layout/SplitLayout";
 import Intro from "./sections/Intro";
 import Bio from "./sections/Bio";
 import Projects from "./sections/Projects";
@@ -10,6 +11,7 @@ import Achievements from "./sections/Achievements";
 import Contact from "./sections/Contact";
 import CodingJourney from "./sections/CodingJourney";
 import Footer from "./sections/Footer";
+import ProjectDetail from "./sections/ProjectDetail"; // New component
 
 const App = () => {
   useEffect(() => {
@@ -17,28 +19,26 @@ const App = () => {
   }, []);
 
   return (
-    <SplitLayout>
-      <Intro />
-      <Bio />
-
-      {/* 📘 My Coding Journey */}
-      <CodingJourney />
-
-      {/* 🚀 Projects */}
-      <Projects />
-
-      {/* 🛠 Tech Stack */}
-      <TechStack />
-
-      {/* 🏆 Achievements */}
-      <Achievements />
-
-      {/* 📬 Contact */}
-      <Contact />
-
-      {/* Footer */}
-      <Footer />
-    </SplitLayout>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <SplitLayout>
+              <Intro />
+              <Bio />
+              <CodingJourney />
+              <Projects />
+              <TechStack />
+              <Achievements />
+              <Contact />
+              <Footer />
+            </SplitLayout>
+          }
+        />
+        <Route path="/projects/:slug" element={<ProjectDetail />} />
+      </Routes>
+    </Router>
   );
 };
 

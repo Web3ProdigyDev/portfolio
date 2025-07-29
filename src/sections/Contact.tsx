@@ -9,7 +9,7 @@ const Contact = () => {
             </p>
             <div className="flex justify-center gap-6 text-2xl text-primary dark:text-primary">
                 <a href="https://github.com/web3prodigydev" target="_blank" rel="noreferrer"><FaGithub /></a>
-                <a href="https://twitter.com/Web3Prodigy_" target="_blank" rel="noreferrer"><FaTwitter /></a>
+                <a href="https://twitter.com/Web3Pr0digyDev" target="_blank" rel="noreferrer"><FaTwitter /></a>
                 <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noreferrer"><FaLinkedin /></a>
                 <a href="https://wa.me/2348142659673" target="_blank" rel="noreferrer"><FaWhatsapp /></a>
                 <a href="https://facebook.com/web3prodigydev01" target="_blank" rel="noreferrer"><FaFacebook /></a>
