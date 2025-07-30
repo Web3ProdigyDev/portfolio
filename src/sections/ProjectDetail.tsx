@@ -81,7 +81,7 @@ const ProjectDetail = () => {
       </h1>
       {project.image && (
         <img
-          src={urlFor(project.image).width(800).height(400).fit("crop").url()}
+          src={urlFor(project.image).width(1600).height(800).fit("crop").url()}
           alt={project.name}
           className="w-full h-96 object-cover rounded-md mb-6"
         />
@@ -171,7 +171,7 @@ const ProjectDetail = () => {
             {project.gallery.map((image, index) => (
               <img
                 key={index}
-                src={urlFor(image).width(300).height(200).fit("crop").url()}
+                src={urlFor(image).width(1000).height(500).fit("crop").url()}
                 alt={`${project.name} gallery image ${index + 1}`}
                 className="w-full h-48 object-cover rounded-md"
               />

@@ -70,7 +70,7 @@ const Projects = () => {
           >
             {project.image && (
               <img
-                src={urlFor(project.image).width(400).height(200).fit("crop").url()}
+                src={urlFor(project.image).width(1600).height(800).fit("crop").url()}
                 alt={project.name}
                 className="w-full h-48 object-cover rounded-md mb-4"
               />
