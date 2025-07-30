@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { client, urlFor } from "../lib/sanityClient";
+import ReviewForm from "../components/ReviewForm";
 
-// Define TypeScript interface for project data
 interface Project {
   name: string;
   description: string;
@@ -22,43 +22,46 @@ interface Project {
   testimonials?: { quote: string; author: string }[];
 }
 
+interface ProjectReview {
+  userName: string;
+  userEmail: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
+
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const [project, setProject] = useState<Project | null>(null);
+  const [reviews, setReviews] = useState<ProjectReview[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const query = `*[_type == "project" && slug.current == $slug][0] {
-      name,
-      description,
-      technologies,
-      image,
-      gallery[] { asset },
-      url,
-      sourceUrl,
-      category -> { name },
-      featured,
-      video,
-      role,
-      client,
-      dateStart,
-      dateEnd,
-      tags,
-      testimonials
-    }`;
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const projectQuery = `*[_type == "project" && slug.current == $slug][0] {
+        name, description, technologies, image, gallery[] { asset }, url, sourceUrl,
+        category -> { name }, featured, video, role, client, dateStart, dateEnd, tags, testimonials
+      }`;
+      const projectData = await client.fetch(projectQuery, { slug });
+      setProject(projectData);
 
-    client
-      .fetch(query, { slug })
-      .then((data: Project) => {
-        setProject(data);
-        setLoading(false);
-      })
-      .catch((err: Error) => {
-        setError("Failed to load project: " + err.message);
-        setLoading(false);
-        console.error(err);
-      });
+      const reviewsQuery = `*[_type == "projectReview" && project->slug.current == $slug && approved == true] {
+        userName, userEmail, rating, comment, createdAt
+      }`;
+      const reviewsData = await client.fetch(reviewsQuery, { slug });
+      setReviews(reviewsData);
+    } catch (err: any) {
+      setError(`Failed to load project or reviews: ${err.message}`);
+      console.error("Fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [slug]);
 
   if (loading) return <div className="text-center py-20">Loading project...</div>;
@@ -194,6 +197,30 @@ const ProjectDetail = () => {
           ))}
         </div>
       )}
+      <div className="mb-6">
+        <h2 className="text-2xl font-semibold text-primary mb-4 dark:text-primary">
+          Project Reviews
+        </h2>
+        {reviews.length === 0 ? (
+          <p className="text-gray-400 dark:text-gray-400">No reviews yet. Be the first!</p>
+        ) : (
+          reviews.map((review, index) => (
+            <div
+              key={index}
+              className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md"
+              data-aos="fade-up"
+            >
+              <p className="font-semibold">{review.userName}</p>
+              <p className="text-yellow-500">{"★".repeat(review.rating)}</p>
+              <p className="italic">{review.comment}</p>
+              <p className="text-sm text-gray-400 dark:text-gray-400">
+                {new Date(review.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
+      <ReviewForm type="project" onSubmitSuccess={fetchData} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -205,7 +232,18 @@ const ProjectDetail = () => {
             image: project.image ? urlFor(project.image).url() : undefined,
             url: project.url,
             keywords: project.technologies || [],
-            creator: { "@type": "Person", name: "Godwin" }, // Replace with your name
+            creator: { "@type": "Person", name: "Godwin Adakonye John" },
+            review: reviews.map((review) => ({
+              "@type": "Review",
+              author: { "@type": "Person", name: review.userName },
+              datePublished: review.createdAt,
+              reviewRating: {
+                "@type": "Rating",
+                ratingValue: review.rating,
+                bestRating: 5,
+              },
+              reviewBody: review.comment,
+            })),
           }),
         }}
       />

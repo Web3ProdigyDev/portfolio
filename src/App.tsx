@@ -11,7 +11,8 @@ import Achievements from "./sections/Achievements";
 import Contact from "./sections/Contact";
 import CodingJourney from "./sections/CodingJourney";
 import Footer from "./sections/Footer";
-import ProjectDetail from "./sections/ProjectDetail"; // New component
+import ProjectDetail from "./sections/ProjectDetail";
+import Reviews from "./sections/Reviews";
 
 const App = () => {
   useEffect(() => {
@@ -31,6 +32,7 @@ const App = () => {
               <Projects />
               <TechStack />
               <Achievements />
+              <Reviews />
               <Contact />
               <Footer />
             </SplitLayout>
