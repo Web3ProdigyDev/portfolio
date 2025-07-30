@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import ThemeToggle from "../components/ThemeToggle";
 import { FaGithub, FaTwitter, FaLinkedin, FaWhatsapp, FaFacebook, FaDiscord } from "react-icons/fa";
 
 const SplitLayout = ({ children }: { children: ReactNode }) => {
@@ -29,7 +28,6 @@ const SplitLayout = ({ children }: { children: ReactNode }) => {
           <a href="https://facebook.com/web3prodigydev01" target="_blank" rel="noreferrer"><FaFacebook /></a>
           <a href="https://discord.com/users/927958299117256764" target="_blank" rel="noreferrer"><FaDiscord /></a>
         </div>
-        <ThemeToggle />
       </aside>
       <main className="w-full md:w-2/3 lg:w-3/4 px-6 py-10 space-y-20 overflow-y-auto bg-light dark:bg-dark text-dark dark:text-white">
         {children}

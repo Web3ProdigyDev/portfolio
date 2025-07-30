@@ -10,9 +10,10 @@ import TechStack from "./sections/TechStack";
 import Achievements from "./sections/Achievements";
 import Contact from "./sections/Contact";
 import CodingJourney from "./sections/CodingJourney";
+import Reviews from "./sections/Reviews";
 import Footer from "./sections/Footer";
 import ProjectDetail from "./sections/ProjectDetail";
-import Reviews from "./sections/Reviews";
+import ThemeToggle from "./components/ThemeToggle";
 
 const App = () => {
   useEffect(() => {
@@ -26,6 +27,7 @@ const App = () => {
           path="/"
           element={
             <SplitLayout>
+              <ThemeToggle />
               <Intro />
               <Bio />
               <CodingJourney />

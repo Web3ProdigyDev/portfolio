@@ -92,7 +92,7 @@ const ReviewForm = ({ type, onSubmitSuccess }: ReviewFormProps) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-6 bg-light dark:bg-dark rounded-lg shadow-md"
+      className="p-6 bg-light dark:bg-dark rounded-lg shadow-md dark:shadow-dark-md"
       data-aos="fade-up"
     >
       <h3 className="text-xl font-semibold text-primary mb-4 dark:text-primary">

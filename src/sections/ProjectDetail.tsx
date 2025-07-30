@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { client, urlFor } from "../lib/sanityClient";
 import ReviewForm from "../components/ReviewForm";
+import ThemeToggle from "../components/ThemeToggle";
 
 interface Project {
   name: string;
@@ -64,33 +65,37 @@ const ProjectDetail = () => {
     fetchData();
   }, [slug]);
 
-  if (loading) return <div className="text-center py-20">Loading project...</div>;
-  if (error) return <div className="text-center py-20 text-red-500">{error}</div>;
-  if (!project) return <div className="text-center py-20">Project not found</div>;
+  if (loading) return <div className="text-center py-10">Loading project...</div>;
+  if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
+  if (!project) return <div className="text-center py-10">Project not found</div>;
 
   return (
-    <section className="py-20 px-6 bg-light dark:bg-dark text-dark dark:text-light">
+    <section className="relative min-h-screen bg-light dark:bg-dark text-dark dark:text-light py-10 px-4 recomendamos sm:px-6">
+      {/* Theme Toggle for Mobile */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
       <Link
         to="/"
-        className="inline-block mb-6 text-primary hover:underline dark:text-primary"
+        className="inline-block mb-6 text-primary hover:underline dark:text-primary text-sm sm:text-base"
       >
         ← Back to Projects
       </Link>
-      <h1 className="text-4xl font-bold text-primary mb-6 dark:text-primary">
+      <h1 className="text-3xl sm:text-4xl font-bold text-primary mb-6 dark:text-primary">
         {project.name}
         {project.featured && (
-          <span className="ml-2 text-sm text-yellow-500">⭐ Featured</span>
+          <span className="ml-2 text-xs sm:text-sm text-yellow-500">⭐ Featured</span>
         )}
       </h1>
       {project.image && (
         <img
-          src={urlFor(project.image).width(1600).height(800).fit("crop").url()}
+          src={urlFor(project.image).width(800).height(400).fit("crop").url()}
           alt={project.name}
-          className="w-full h-96 object-cover rounded-md mb-6"
+          className="w-full h-48 sm:h-64 md:h-80 object-cover rounded-md mb-6"
         />
       )}
-      <p className="text-lg mb-4">{project.description}</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <p className="text-base sm:text-lg mb-4">{project.description}</p>
+      <div className="grid grid-cols-1 gap-4 mb-6">
         <div>
           <p className="text-sm text-gray-400 dark:text-gray-400">
             <strong>Technologies:</strong> {project.technologies?.join(", ") || "None"}
@@ -126,38 +131,38 @@ const ProjectDetail = () => {
             </p>
           )}
         </div>
-        <div>
+        <div className="space-y-2">
           {project.url && (
-            <p className="mb-2">
+            <p>
               <a
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+                className="inline-block px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark text-sm"
               >
                 Visit Live Site
               </a>
             </p>
           )}
           {project.sourceUrl && (
-            <p className="mb-2">
+            <p>
               <a
                 href={project.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                className="inline-block px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 text-sm"
               >
                 View Source Code
               </a>
             </p>
           )}
           {project.video && (
-            <p className="mb-2">
+            <p>
               <a
                 href={project.video}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                className="inline-block px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
               >
                 Watch Video Demo
               </a>
@@ -167,16 +172,16 @@ const ProjectDetail = () => {
       </div>
       {project.gallery && project.gallery.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-primary mb-4 dark:text-primary">
+          <h2 className="text-xl sm:text-2xl font-semibold text-primary mb-4 dark:text-primary">
             Gallery
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {project.gallery.map((image, index) => (
               <img
                 key={index}
-                src={urlFor(image).width(1000).height(500).fit("crop").url()}
+                src={urlFor(image).width(600).height(300).fit("crop").url()}
                 alt={`${project.name} gallery image ${index + 1}`}
-                className="w-full h-48 object-cover rounded-md"
+                className="w-full h-32 sm:h-40 object-cover rounded-md"
               />
             ))}
           </div>
@@ -184,13 +189,16 @@ const ProjectDetail = () => {
       )}
       {project.testimonials && project.testimonials.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-primary mb-4 dark:text-primary">
+          <h2 className="text-xl sm:text-2xl font-semibold text-primary mb-4 dark:text-primary">
             Testimonials
           </h2>
           {project.testimonials.map((testimonial, index) => (
-            <div key={index} className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
-              <p className="italic">"{testimonial.quote}"</p>
-              <p className="text-sm text-gray-400 dark:text-gray-400">
+            <div
+              key={index}
+              className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow-md dark:shadow-dark-md"
+            >
+              <p className="italic text-sm sm:text-base">"{testimonial.quote}"</p>
+              <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-400">
                 — {testimonial.author}
               </p>
             </div>
@@ -198,22 +206,24 @@ const ProjectDetail = () => {
         </div>
       )}
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold text-primary mb-4 dark:text-primary">
+        <h2 className="text-xl sm:text-2xl font-semibold text-primary mb-4 dark:text-primary">
           Project Reviews
         </h2>
         {reviews.length === 0 ? (
-          <p className="text-gray-400 dark:text-gray-400">No reviews yet. Be the first!</p>
+          <p className="text-gray-400 dark:text-gray-400 text-sm sm:text-base">
+            No reviews yet. Be the first!
+          </p>
         ) : (
           reviews.map((review, index) => (
             <div
               key={index}
-              className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md"
+              className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow-md dark:shadow-dark-md"
               data-aos="fade-up"
             >
-              <p className="font-semibold">{review.userName}</p>
-              <p className="text-yellow-500">{"★".repeat(review.rating)}</p>
-              <p className="italic">{review.comment}</p>
-              <p className="text-sm text-gray-400 dark:text-gray-400">
+              <p className="font-semibold text-sm sm:text-base">{review.userName}</p>
+              <p className="text-yellow-500 text-sm">{"★".repeat(review.rating)}</p>
+              <p className="italic text-sm sm:text-base">{review.comment}</p>
+              <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-400">
                 {new Date(review.createdAt).toLocaleDateString()}
               </p>
             </div>
